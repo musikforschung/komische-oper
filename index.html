@@ -18,6 +18,7 @@
  <link rel="stylesheet" href="./src/leaflet-search.css" /> 
  <link rel="stylesheet" href="style.css" />					
 
+ 
 	
 	<style>
 			body {
@@ -53,7 +54,6 @@
 
 
 <script>
-	
 
 
 var map = L.map('map').setView([52.470623108593, 13.416227531435], 11); 
@@ -65,15 +65,14 @@ var map = L.map('map').setView([52.470623108593, 13.416227531435], 11);
 
 
 var markers = new L.MarkerClusterGroup();
-		
-		for (var i = 0; i < addressPoints.length; i++) {
+        for (var i = 0; i < addressPoints.length; i++) {
 			var a = addressPoints[i];
 			var title = a[2];
 			var name = a[3]
 			var colormarker = a[4]
 			var typemarker = a[5]
 			var marker = L.marker(new L.LatLng(a[0], a[1]), 
-				{icon: L.mapbox.marker.icon({'marker-symbol':typemarker, 'marker-color': colormarker}),
+				{
 				title: name
 			});
 			marker.bindPopup(title);
@@ -82,6 +81,7 @@ var markers = new L.MarkerClusterGroup();
 	
 
 	map.addLayer(markers);
+    
 
 var pulsingIcon = L.icon.pulse({iconSize:[12,12],color:'red'});
 
@@ -117,4 +117,3 @@ var controlSearch = new L.Control.Search({
 	
 </body>
 </html>
-
