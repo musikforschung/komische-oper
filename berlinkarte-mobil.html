@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Topographie des Berliner Konzertlebens 1880-1945</title>
+
+	<link rel="stylesheet" href="./lib/mapbox.css" />
+	<script src="./lib/mapbox-mobile.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="./dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="./dist/MarkerCluster.Default.css" />
+	<script src="./dist/leaflet.markercluster-src.js"></script>
+	<script charset="UTF-8" src="berlinkarte-mobil.js"></script>
+	<style>
+			body {
+				padding: 0;
+				margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+		}
+	</style>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<body>
+
+	<div id="map"></div>
+	<script type="text/javascript">
+
+			var map = L.map('map');
+	var Hydda_Full = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	maxZoom: 18, 
+	}).addTo(map);
+		
+		
+		var markers = new L.MarkerClusterGroup();
+		
+		for (var i = 0; i < addressPoints.length; i++) {
+			var a = addressPoints[i];
+			var title = a[2];
+			var name = a[3]	
+			var colormarker = a[4]
+			var typemarker = a[5]
+			var url = 'http://maps.google.com/maps?daddr=' + a[0] + ',' + a[1]
+			var marker = L.marker(new L.LatLng(a[0], a[1]), 
+				{icon: L.mapbox.marker.icon({'marker-symbol':typemarker, 'marker-color': colormarker}),
+				title: name
+			});
+			marker.bindPopup(title + '<br><a href=' + url + ' target=_blank>Navigate with Google Maps</a>');
+			markers.addLayer(marker);
+		}
+
+		map.addLayer(markers);
+		
+		function onLocationFound(e) {
+			var radius = e.accuracy / 2;
+
+			L.marker(e.latlng).addTo(map)
+				.bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+			L.circle(e.latlng, radius).addTo(map);
+		}
+		
+		map.on('locationfound', onLocationFound);
+
+		function onLocationError(e) {
+			alert(e.message);
+		}
+
+		map.on('locationerror', onLocationError);
+		
+		map.locate({setView: true, maxZoom: 11});
+	</script>
+</body>
+</html>

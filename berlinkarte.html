@@ -1,0 +1,119 @@
+ <!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Topographie des Berliner Konzertlebens 1880-1945</title>
+
+	<link rel="stylesheet" href="./lib/mapbox.css" />
+	<script src="./lib/mapbox.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="./dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="./dist/MarkerCluster.Default.css" />
+	<script src="./dist/leaflet.markercluster-src.js"></script>
+	<script charset="UTF-8" src="berlinkarte.js"></script>
+	
+	
+ <link rel="stylesheet" href="./dist/leaflet.css" />
+ <link rel="stylesheet" href="./src/leaflet-search.css" /> 
+ <link rel="stylesheet" href="style.css" />					
+
+	
+	<style>
+			body {
+				padding: 0;
+				margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+		}
+	</style>
+	<style type="text/css">
+		a:link { text-decoration:none; }
+	</style>
+	
+	<link rel="stylesheet" href="./dist/L.Icon.Pulse.css" />
+	
+
+	
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<body>
+
+	<div id="map"></div>
+	
+	
+	
+	<script type="text/javascript"></script>
+	<script src="./dist/L.Icon.Pulse.js"></script>
+	<script src="./dist/leaflet.js"></script>
+	<script src="./src/leaflet-search.js"></script>		
+
+	
+
+
+<script>
+	
+
+
+var map = L.map('map').setView([52.470623108593, 13.416227531435], 11); 
+    var OpenStreetMap_DE = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+
+
+var markers = new L.MarkerClusterGroup();
+		
+		for (var i = 0; i < addressPoints.length; i++) {
+			var a = addressPoints[i];
+			var title = a[2];
+			var name = a[3]
+			var colormarker = a[4]
+			var typemarker = a[5]
+			var marker = L.marker(new L.LatLng(a[0], a[1]), 
+				{icon: L.mapbox.marker.icon({'marker-symbol':typemarker, 'marker-color': colormarker}),
+				title: name
+			});
+			marker.bindPopup(title);
+			markers.addLayer(marker);
+		}
+	
+
+	map.addLayer(markers);
+
+var pulsingIcon = L.icon.pulse({iconSize:[12,12],color:'red'});
+
+		var markerI = L.marker([52.509694,13.370928],{icon: pulsingIcon}).addTo(map);
+		markerI.bindPopup(title);
+		markers.addLayer(marker);
+	
+var controlSearch = new L.Control.Search({
+		position:'topleft',
+		layer: markers,
+		initial: false,
+		collapsed: false,
+		zoom: 18,
+		
+		
+});	
+	
+	
+	map.addControl( controlSearch ); 
+	
+	for(i in data) {
+		var title = data[i].title,	//value searched
+			loc = data[i].loc,		//position found
+			marker = new L.Marker(new L.latLng(loc), {title: title} );//se property searched
+		marker.bindPopup('title: '+ title );
+		markersLayer.addLayer(marker );
+	}
+
+
+</script>
+
+	
+	
+</body>
+</html>
